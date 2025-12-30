@@ -1,0 +1,67 @@
+.guitar-container {
+  padding: 30px;
+  max-width: 1000px;
+}
+
+.chord-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.chord-buttons button {
+  padding: 10px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.fretboard {
+  background: #96580b;
+  border: 2px solid #999;
+  padding: 10px;
+}
+
+.string-row {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  position: relative;
+}
+
+.string-label {
+  width: 40px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.string-line {
+  position: absolute;
+  left: 40px;
+  right: 0;
+  background: #d6ba86;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.fret {
+  flex: 1;
+  height: 100%;
+  border-left: 1px solid #ffffff;
+  position: relative;
+  cursor: pointer;
+}
+
+.fret:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  background: #c7c7c7;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../style/Chatbot.css";
+import { useGuitar } from "../hooks/useGuitar";
 
 export default function Chatbot() {
   const [messages, setMessages] = useState([
@@ -7,6 +8,17 @@ export default function Chatbot() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const { playStringFret } = useGuitar();
+
+  async function playSong(notes) {
+    for (const note of notes) {
+      if (note.string !== undefined && note.fret !== undefined) {
+        playStringFret(note.string, note.fret);
+      }
+      // Wait for the duration of the note before the next one
+      await new Promise((r) => setTimeout(r, (note.duration || 0.5) * 1000));
+    }
+  }
 
   async function send() {
     const text = input.trim();
@@ -23,7 +35,13 @@ export default function Chatbot() {
         body: JSON.stringify({ message: text }),
       });
       const data = await r.json();
+
       setMessages((m) => [...m, { role: "assistant", text: data.reply ?? "(no reply)" }]);
+
+      if (data.active && Array.isArray(data.song)) {
+        playSong(data.song);
+      }
+
     } finally {
       setLoading(false);
     }
@@ -47,7 +65,7 @@ export default function Chatbot() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          placeholder="Ask any question:"
+          placeholder="Ask me to play a song! (e.g., 'Play Twinkle Twinkle Little Star')"
           style={{ flex: 1, padding: 10 }}
         />
         <button onClick={send} disabled={loading}>Ok</button>
